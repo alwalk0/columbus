@@ -17,11 +17,11 @@ def start():
 
     with open('models.py', 'w') as f:
         f.write('''\
-    import databases
+import databases
 
-    DATABASE_URL = ' '
+DATABASE_URL = ' '
 
-    database = databases.Database(DATABASE_URL)
+database = databases.Database(DATABASE_URL)
 
             
     ''')
