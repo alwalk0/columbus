@@ -6,4 +6,5 @@ databases
 psycopg2
 alembic
 python-dotenv
+watchfiles
 

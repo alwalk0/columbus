@@ -282,10 +282,21 @@ h11 = ">=0.8"
 [package.extras]
 standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "watchfiles (>=0.13)", "websockets (>=10.4)"]
 
+[[package]]
+name = "watchfiles"
+version = "0.18.1"
+description = "Simple, modern and high performance file watching and code reload in python."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+anyio = ">=3.0.0"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "fe4cb1160b4de66a2f3d62ec8ce54b3fe089ead9a13ebfb0a7574102f4f1ce1e"
+content-hash = "a90952f214c42981d4e9e80828dbd67e0ee18d1cb3b19aecbb1c4a93055bee5d"
 
 [metadata.files]
 alembic = []
@@ -310,3 +321,4 @@ starlette = []
 typer = []
 typing-extensions = []
 uvicorn = []
+watchfiles = []
