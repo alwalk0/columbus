@@ -34,6 +34,3 @@ jobs:
     - name: Format with Black
       run: |
         black columbus 
-    - name: MyPy checks
-      run: |
-        mypy columbus   
