@@ -56,7 +56,7 @@ def create_route(method: str, url: str, table_name: str, no_arg=False) -> Route:
 def create_view_function(method: str, table_name: str) -> Callable:
     table = database_tables[table_name]
 
-    async def view_function(request: Request):
+    async def view_function(request: Request) -> Callable:
         match method:
             case "GET":
                 return await get_request(request, table)
