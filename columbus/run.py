@@ -7,7 +7,7 @@ app = typer.Typer()
 
 
 @app.command()
-def start():
+def run():
     uvicorn.run(
         "columbus.framework.main:app",
         host=str(host),
