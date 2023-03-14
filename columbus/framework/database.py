@@ -6,9 +6,10 @@ from starlette.applications import Starlette
 from starlette.responses import PlainTextResponse
 import yaml
 from columbus.start import MAIN_CONFIG_NAME
+from typing import Any
 
 
-def import_from_file(file_name: str, object: str) -> any:
+def import_from_file(file_name: str, object: str) -> Any:
     if not os.path.exists(file_name):
         raise Exception("No such file: {}".format(file_name))
     file_path = os.path.abspath(file_name)

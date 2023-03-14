@@ -8,6 +8,7 @@ from starlette.routing import Route
 from columbus.framework.queries import raw_queries
 from columbus.framework.responses import responses, error_responses
 from columbus.framework.database import do_database_setup, run_without_database
+from typing import List, Callable
 
 
 database, database_tables = do_database_setup()
@@ -19,7 +20,7 @@ def create_app(apis:dict) -> Starlette:
     specs_list = apis.values()
 
     routes = list(map(create_routes_list, specs_list))
-    all_routes = sum(routes, [])
+    all_routes: list = sum(routes, [])     #routes is a list of lists, therefore we must flatten it with sum()
 
     app = Starlette(
         routes=all_routes,
@@ -52,7 +53,7 @@ def create_route(method: str, url: str, table_name: str, no_arg=False) -> Route:
     return route
 
 
-def create_view_function(method: str, table_name: str):
+def create_view_function(method: str, table_name: str) -> Callable:
     table = database_tables[table_name]
 
     async def view_function(request: Request):
