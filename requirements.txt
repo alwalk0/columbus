@@ -1,10 +1,10 @@
-jinja2
 starlette
 uvicorn
 pyaml
 databases
 psycopg2
-alembic
-python-dotenv
 watchfiles
+typer
+sqlalchemy
+pyaml
 
