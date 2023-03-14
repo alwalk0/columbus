@@ -20,7 +20,7 @@ def import_from_file(file_name: str, object: str) -> any:
     return getattr(modulename, object)
 
 
-def import_all_database_tables(apis: str, models_file: str) -> dict:
+def import_all_database_tables(apis: dict, models_file: str) -> dict:
     table_names = [v["table"] for k, v in apis.items()]
     imported_tables = [
         import_from_file(file_name=models_file, object=table) for table in table_names

@@ -39,4 +39,4 @@ database = databases.Database(DATABASE_URL)
 
 
 if __name__ == "__main__":
-    typer.run(startup_script)
+    typer.run(start)
