@@ -35,5 +35,6 @@ jobs:
         black columbus 
     - name: MyPy checks
       run: |
+        mypy --install-types
         mypy columbus
      
