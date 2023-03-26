@@ -1,3 +1,10 @@
 TODO.md
 ___pycache__
 .DS_Store
+columbus/__pycache__
+tests/__pycache__
+columbus/framework/__pycache__
+columbus/framework/__pycache__
+tests/__pycache__
+columbus/framework/__pycache__
+venv
