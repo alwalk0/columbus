@@ -11,8 +11,8 @@ from columbus.framework.database import do_database_setup, run_without_database
 from typing import List, Callable
 
 
-if __name__ == '__main__':
-    database, database_tables = do_database_setup()
+
+database, database_tables = do_database_setup()
 
 
 def create_app(apis:dict) -> Starlette:

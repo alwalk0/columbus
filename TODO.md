@@ -7,3 +7,4 @@
 * put code in if name == main
 * all types of sqlalchemy columns
 * foreign keys
+* consider replacing uvicorn with gunicorn
