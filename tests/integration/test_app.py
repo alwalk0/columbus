@@ -48,13 +48,7 @@ def server():
 
 
 @pytest.fixture(scope='session')
-def database():
-    pass         
-
-
-
-# @pytest.fixture(scope='module')
-def test_connection(mocker, server):
+def connection():
     postgres_container = PostgresContainer("postgres:9.5")
     with postgres_container as postgres:
         engine = sqlalchemy.create_engine(postgres.get_connection_url())
@@ -65,10 +59,16 @@ def test_connection(mocker, server):
             data = {'id': 1, 'name': 'boo', 'breed': 'labrador', 'age': 3}
             insert_query = dogs.insert().values(data)
             result = connection.execute(insert_query)
-            query = dogs.select()
-            rows = connection.execute(query) 
-            q1 = rows.fetchall()
-            mocker.patch('columbus.framework.main.MAIN_CONFIG_NAME', 'tests/integration/main.yml')
-            mocker.patch('columbus.framework.database.MAIN_CONFIG_NAME', 'tests/integration/main.yml')
-            response = requests.get('http://0.0.0.0:8080')
+
+            yield connection    
+
+
+def test_connection(mocker, server, connection):
+    query = dogs.select()
+    rows = connection.execute(query) 
+    q1 = rows.fetchall()
+    print(q1)
+    mocker.patch('columbus.framework.main.MAIN_CONFIG_NAME', 'tests/integration/main.yml')
+    mocker.patch('columbus.framework.database.MAIN_CONFIG_NAME', 'tests/integration/main.yml')
+    response = requests.get('http://0.0.0.0:8080')
 
