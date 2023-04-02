@@ -6,3 +6,4 @@
 * all types of sqlalchemy columns
 * foreign keys
 * consider replacing uvicorn with gunicorn
+* requirements/test requirements?
