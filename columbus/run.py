@@ -1,17 +1,16 @@
 import typer
 import uvicorn
-from columbus.framework.main import host, port
 
 
 app = typer.Typer()
 
 
 @app.command()
-def run():
+def start():
     uvicorn.run(
-        "columbus.framework.main:app",
-        host=str(host),
-        port=port,
+        "columbus.app:app",
+        host="0.0.0.0",
+        port=8000,
         reload=True,
         reload_includes="*.yml",
     )

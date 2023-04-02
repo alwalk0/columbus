@@ -1,9 +1,8 @@
 import typer
 import os
+from columbus.app import MAIN_CONFIG_NAME
 
 app = typer.Typer()
-
-MAIN_CONFIG_NAME = "main.yml"
 
 MODELS_NAME = "models.py"
 
@@ -39,4 +38,4 @@ database = databases.Database(DATABASE_URL)
 
 
 if __name__ == "__main__":
-    typer.run(start)
+    typer.run(startup_script)

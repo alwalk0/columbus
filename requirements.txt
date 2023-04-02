@@ -7,4 +7,5 @@ watchfiles
 typer
 sqlalchemy
 pyaml
+asyncpg
 

@@ -1,0 +1,8 @@
+models: tests/integration/models.py
+database: postgresql+psycopg2://test:test@localhost:59686/test
+apis:
+  hello_world:
+    table: dogs
+    methods: [GET]
+            
+    

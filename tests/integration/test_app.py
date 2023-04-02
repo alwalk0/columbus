@@ -2,33 +2,56 @@ import pytest
 from testcontainers.postgres import PostgresContainer
 import sqlalchemy
 import databases
-from columbus.run import run
 import uvicorn
 import sys
 import os
 import psutil
 import time
 import requests
+import multiprocess as mp
 from multiprocessing import Process
+from unittest import mock
 
+from .models import dogs, metadata
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from columbus.framework.main import create_app
+from sqlalchemy.orm import sessionmaker
+from columbus.run import start
 
-metadata = sqlalchemy.MetaData()
-
-dogs = sqlalchemy.Table(
-    "dogs",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("name", sqlalchemy.String),
-    sqlalchemy.Column("breed", sqlalchemy.String),
-    sqlalchemy.Column("age", sqlalchemy.Integer)
-)
 
 
 @pytest.fixture(scope='session')
-def server():
+def connection():
+    postgres_container = PostgresContainer(image='postgres:latest')
+    with postgres_container as postgres:
+        engine = sqlalchemy.create_engine(postgres.get_connection_url())
+        url = postgres.get_connection_url()
+        with engine.begin() as connection:
+            result = connection.execute(sqlalchemy.text("select version()"))
+            version, = result.fetchone()
+            metadata.create_all(engine)
+            data = {'id': 1, 'name': 'boo', 'breed': 'labrador', 'age': 3}
+            insert_query = dogs.insert().values(data)
+            result = connection.execute(insert_query)
+
+            yield url
+
+
+
+@pytest.fixture(scope='module')
+def config(connection):
+    config = {'models': 'tests/integration/models.py', 'database': connection, 'apis': {'hello_world': {'table': 'dogs', 'methods':['GET'] }}}
+    yield config
+ 
+@pytest.fixture()
+def server(mocker, config, connection):
+    print(config)
+    mocker.patch('columbus.app.validate_config', config)
+    # app = create_app(config)
     proc = Process(
     target=uvicorn.run,
-    args=("columbus.framework.main:app",),
+    args=('columbus.app:app',),
     kwargs={
         "host":'0.0.0.0',
         "port": 8080,
@@ -47,28 +70,18 @@ def server():
             child.kill()
 
 
-@pytest.fixture(scope='session')
-def connection():
-    postgres_container = PostgresContainer("postgres:9.5")
-    with postgres_container as postgres:
-        engine = sqlalchemy.create_engine(postgres.get_connection_url())
-        with engine.begin() as connection:
-            result = connection.execute(sqlalchemy.text("select version()"))
-            version, = result.fetchone()
-            metadata.create_all(engine)
-            data = {'id': 1, 'name': 'boo', 'breed': 'labrador', 'age': 3}
-            insert_query = dogs.insert().values(data)
-            result = connection.execute(insert_query)
-
-            yield connection    
 
 
-def test_connection(mocker, server, connection):
-    query = dogs.select()
-    rows = connection.execute(query) 
-    q1 = rows.fetchall()
-    print(q1)
-    mocker.patch('columbus.framework.main.MAIN_CONFIG_NAME', 'tests/integration/main.yml')
-    mocker.patch('columbus.framework.database.MAIN_CONFIG_NAME', 'tests/integration/main.yml')
+def test_connection(server):
+
+    # mocker.patch("columbus.framework.utils.MAIN_CONFIG_NAME", 'tests/integration/main.yml')
+    # engine = server[0]
+    # config_dict = server[1]
+    # query = dogs.select()
+    # rows = engine.execute(query) 
+    # q1 = rows.fetchall()
+    # print(q1)
+    # start()
+   
     response = requests.get('http://0.0.0.0:8080')
 

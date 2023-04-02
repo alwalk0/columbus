@@ -34,3 +34,7 @@ jobs:
     - name: Format with Black
       run: |
         black columbus 
+
+    - name: Run tests
+      run: |
+        pytest tests   
