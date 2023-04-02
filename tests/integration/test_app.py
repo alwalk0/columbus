@@ -8,7 +8,6 @@ import os
 import psutil
 import time
 import requests
-import multiprocess as mp
 from multiprocessing import Process
 from unittest import mock
 
