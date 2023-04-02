@@ -47,26 +47,28 @@ def config(connection):
 def server(mocker, config, connection):
     print(config)
     mocker.patch('columbus.app.validate_config', config)
+    start()
+
     # app = create_app(config)
-    proc = Process(
-    target=uvicorn.run,
-    args=('columbus.app:app',),
-    kwargs={
-        "host":'0.0.0.0',
-        "port": 8080,
-        "workers": 3,
-    },
-)
-    proc.start()
-    time.sleep(10)
-    assert proc.is_alive()
-    try:
-        yield
-    finally:
-        pid = os.getpid()
-        parent = psutil.Process(pid)
-        for child in parent.children(recursive=True):
-            child.kill()
+#     proc = Process(
+#     target=uvicorn.run,
+#     args=('columbus.app:app',),
+#     kwargs={
+#         "host":'0.0.0.0',
+#         "port": 8080,
+#         "workers": 3,
+#     },
+# )
+#     proc.start()
+#     time.sleep(10)
+#     assert proc.is_alive()
+#     try:
+#         yield
+#     finally:
+#         pid = os.getpid()
+#         parent = psutil.Process(pid)
+#         for child in parent.children(recursive=True):
+#             child.kill()
 
 
 
