@@ -7,3 +7,4 @@
 * foreign keys
 * consider replacing uvicorn with gunicorn
 * requirements/test requirements?
+* demo mode

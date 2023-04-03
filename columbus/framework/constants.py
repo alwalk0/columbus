@@ -1,9 +1,10 @@
+
 from columbus.framework.utils import make_json_object, create_put_request_query
+
 
 ALLOWED_KEYS = ["database", "models", "apis"]
 ALLOWED_KEYS_API = ["table", "methods"]
 ALLOWED_METHODS_API = ["GET", "PUT", "POST", "DELETE"]
-
 
 
 EXCEPTIONS = {

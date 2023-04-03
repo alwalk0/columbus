@@ -1,4 +1,3 @@
-
 import os
 import databases
 from columbus.framework.utils import import_file
@@ -12,8 +11,6 @@ from columbus.framework.constants import (
 
 def validate_config(config):
     keys = list(config.keys())
-    if 'demo' in keys and config.get('demo') == True:
-        return 'demo'
     missing_keys = [key for key in ALLOWED_KEYS if key not in keys]
     if missing_keys:
         return Exception(EXCEPTIONS["MISSING_KEYS"](missing_keys))
@@ -62,7 +59,7 @@ def validate_database(config):
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("database"))
     try:
         database = databases.Database(database_url)
-    except KeyError: 
+    except:
         return Exception(EXCEPTIONS["INVALID_DB_URL"]())
 
     return database_url

@@ -1,89 +1,56 @@
-import pytest
+from starlette.testclient import TestClient
+from httpx import AsyncClient
+from columbus.framework.main import create_app
+from sqlalchemy import create_engine
 from testcontainers.postgres import PostgresContainer
 import sqlalchemy
+import pytest
+from .models import metadata, dogs
+# from columbus.app2 import metadata
 import databases
-import uvicorn
-import sys
-import os
-import psutil
-import time
-import requests
-from multiprocessing import Process
-from unittest import mock
-
-from .models import dogs, metadata
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database, drop_database
+from columbus.framework.main import create_routes_list
+from starlette.applications import Starlette
+import contextlib
+from starlette.routing import Route
+from starlette.responses import PlainTextResponse
+# from columbus.app import app
 from columbus.framework.main import create_app
-from sqlalchemy.orm import sessionmaker
-from columbus.run import start
+import json
 
+config = {'models': 'tests/integration/models.py', 'database': 'postgresql://newuser:postgres@localhost/test2', 'apis': {'hello_world': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
 
+app = create_app(config)
+@pytest.fixture(scope="session", autouse=True)
+def create_test_database():
 
-@pytest.fixture(scope='session')
-def connection():
-    postgres_container = PostgresContainer(image='postgres:latest')
-    with postgres_container as postgres:
-        engine = sqlalchemy.create_engine(postgres.get_connection_url())
-        url = postgres.get_connection_url()
-        with engine.begin() as connection:
-            result = connection.execute(sqlalchemy.text("select version()"))
-            version, = result.fetchone()
-            metadata.create_all(engine)
-            data = {'id': 1, 'name': 'boo', 'breed': 'labrador', 'age': 3}
-            insert_query = dogs.insert().values(data)
-            result = connection.execute(insert_query)
-
-            yield url
-
-
-
-@pytest.fixture(scope='module')
-def config(connection):
-    config = {'models': 'tests/integration/models.py', 'database': connection, 'apis': {'hello_world': {'table': 'dogs', 'methods':['GET'] }}}
-    yield config
- 
+    url = 'postgresql://newuser:postgres@localhost/test2'
+    engine = create_engine(url)
+    create_database(url)             # Create the test database.
+    metadata.create_all(engine) 
+    data = {'id': 1, 'name': 'boo', 'breed': 'labrador', 'age': 3}
+    insert_query = dogs.insert().values(data)  
+    engine.execute(insert_query) 
+    yield                            # Run the tests.
+    drop_database(url)    
+               # Drop the test database.
 @pytest.fixture()
-def server(mocker, config, connection):
-    print(config)
-    mocker.patch('columbus.app.validate_config', config)
-    start()
+def client(mocker):
 
-    # app = create_app(config)
-#     proc = Process(
-#     target=uvicorn.run,
-#     args=('columbus.app:app',),
-#     kwargs={
-#         "host":'0.0.0.0',
-#         "port": 8080,
-#         "workers": 3,
-#     },
-# )
-#     proc.start()
-#     time.sleep(10)
-#     assert proc.is_alive()
-#     try:
-#         yield
-#     finally:
-#         pid = os.getpid()
-#         parent = psutil.Process(pid)
-#         for child in parent.children(recursive=True):
-#             child.kill()
+    with TestClient(app) as client:
+        yield client
 
 
 
 
-def test_connection(server):
-    pass
+def test_homepage(client, mocker):
+    # url = app.url_path_for('/dogs')
+    response = client.get('/dogs')
+    print(response.text)
+    assert response.status_code == 200
 
-    # mocker.patch("columbus.framework.utils.MAIN_CONFIG_NAME", 'tests/integration/main.yml')
-    # engine = server[0]
-    # config_dict = server[1]
-    # query = dogs.select()
-    # rows = engine.execute(query) 
-    # q1 = rows.fetchall()
-    # print(q1)
-    # start()
-   
-    # response = requests.get('http://0.0.0.0:8080')
-
+def test_post(client, mocker):
+    # url = app.url_path_for('/dogs')
+    response = client.post('/dogs', data=json.dumps({'id': 3, 'name': 'fifi', 'breed': 'labrador', 'age': 3}))
+    print(response.text)
+    assert response.status_code == 200    

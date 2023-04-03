@@ -57,12 +57,12 @@ def create_views_config(api, config):
     url = "/" + str(table)
     views = []
     for method in methods:
-        if method == "GET" or method == "POST":
+        if method == "POST":
             view = create_view_dict(
-                method, url + "/{id:int}", config["database"], table, models
+                method, url, config["database"], table, models
             )
 
-        elif method == "PUT" or method == "DELETE":
+        else:
             view = create_view_dict(
                 method, url + "/{id:int}", config["database"], table, models
             )

@@ -1,6 +1,6 @@
 import typer
 import os
-from columbus.app import MAIN_CONFIG_NAME
+from columbus.framework.main import MAIN_CONFIG_NAME
 
 app = typer.Typer()
 

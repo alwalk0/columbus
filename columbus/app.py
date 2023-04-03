@@ -2,7 +2,7 @@ from columbus.framework.main import create_app
 from columbus.framework.utils import read_config
 from columbus.framework.validators import validate_config
 
-MAIN_CONFIG_NAME = "tests/integration/main.yml"
+MAIN_CONFIG_NAME = "main.yml"
 
 config_dict = read_config(MAIN_CONFIG_NAME)
 if isinstance(config_dict, Exception):
