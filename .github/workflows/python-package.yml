@@ -5,7 +5,10 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
-    branches: [ "maaster" ]
+    branches: [ "master" ]
+
+env:
+  DB_HOST: localhost    
 
 jobs:
   build:
