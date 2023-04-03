@@ -10,3 +10,4 @@ pyaml
 asyncpg
 testcontainers
 psutil
+sqlalchemy-utils
