@@ -8,22 +8,22 @@ from columbus.framework.constants import RESPONSES, ERROR_RESPONSES, RAW_QUERIES
 
 
 async def get_request(request: Request, table: Table, database) -> Response:
-    try:
-        if request.path_params:
-            query = RAW_QUERIES["GET_ONE"](table)
-            pk = request.path_params["id"]
-            result = await database.fetch_one(query=query, values={"id": pk})
-            response = RESPONSES["GET_ONE"](table, result)
-            json_response = JSONResponse(response)
-        else:
-            query = table.select()
-            results = await database.fetch_all(query)
-            response = RESPONSES["GET_ALL"](table, results)
-            json_response = JSONResponse(response)
+    # try:
+    if request.path_params:
+        query = RAW_QUERIES["GET_ONE"](table)
+        pk = request.path_params["id"]
+        result = await database.fetch_one(query=query, values={"id": pk})
+        response = RESPONSES["GET_ONE"](table, result)
+        json_response = JSONResponse(response)
+    else:
+        query = table.select()
+        results = await database.fetch_all(query)
+        response = RESPONSES["GET_ALL"](table, results)
+        json_response = JSONResponse(response)
 
-        return json_response
-    except Exception as e:
-        return Response(content=ERROR_RESPONSES["GET"], status_code=500)
+    return json_response
+    # except Exception as e:
+    #     return Response(content=ERROR_RESPONSES["GET"], status_code=500)
 
 
 async def post_request(request: Request, table: Table, database) -> Response:

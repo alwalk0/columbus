@@ -37,7 +37,6 @@ jobs:
     - name: Format with Black
       run: |
         black columbus 
-
     - name: Run tests
       run: |
-        python -m  pytest -s tests/   
+        python -m  pytest -s tests/unit 

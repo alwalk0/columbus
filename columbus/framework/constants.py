@@ -1,4 +1,3 @@
-
 from columbus.framework.utils import make_json_object, create_put_request_query
 
 
@@ -18,6 +17,7 @@ EXCEPTIONS = {
         table_name, models_file
     ),
     "INVALID_DB_URL": lambda: "Invalid database url in config",
+    "MUST_BE_LIST": "Value for methods key must be a list",
 }
 
 

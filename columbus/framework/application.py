@@ -1,8 +1,6 @@
 from sqlalchemy import Table
 
-from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.responses import PlainTextResponse
 from starlette.routing import Route
 
 from columbus.framework.constants import RESPONSES, ERROR_RESPONSES, RAW_QUERIES
@@ -16,28 +14,8 @@ from columbus.framework.requests import (
 )
 
 
-def create_app(validated_config) -> Starlette:
-    # replace the database url in the config with the actual Database object
-    database = databases.Database(validated_config["database"])
-    validated_config["database"] = database
-
-    if not database:
-        welcome = "Welcome to Columbus. This is demo mode. Please set up the database to generate APIs."
-        route = [Route("/", endpoint=lambda request: PlainTextResponse(welcome))]
-        return Starlette(routes=route)
-
-    all_routes = create_routes_list(validated_config)
-    app = Starlette(
-        routes=all_routes,
-        on_startup=[database.connect],
-        on_shutdown=[database.disconnect],
-    )
-
-    return app
-
-
 def create_routes_list(config):
-    """Creates a list of all routes for the app with the data from the views config"""
+    """Creates a list of all routes for the app using the data from the views config"""
     apis = config.get("apis")
     apis_list = list(apis.keys())
     views_config = [create_views_config(api, config) for api in apis_list]

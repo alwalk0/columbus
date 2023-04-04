@@ -1,10 +1,14 @@
 import typer
 import os
-from columbus.framework.main import MAIN_CONFIG_NAME
 
 app = typer.Typer()
 
 MODELS_NAME = "models.py"
+
+
+MAIN_CONFIG_NAME = "main.yml"
+
+
 
 
 @app.command()
@@ -13,8 +17,7 @@ def start():
         with open(MAIN_CONFIG_NAME, "w") as f:
             f.write(
                 """\
-host: 0.0.0.0
-port: 8000
+demo: True
 models: models.py
 database:
 apis:
@@ -29,10 +32,8 @@ apis:
         with open(MODELS_NAME, "w") as f:
             f.write(
                 """\
-import databases
-DATABASE_URL = ' '
-database = databases.Database(DATABASE_URL)
-            
+import sqlalchemy
+   
     """
             )
 

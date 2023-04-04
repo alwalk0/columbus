@@ -2,9 +2,9 @@
 * tests
 * comments
 * double check variable names
-* check examples of test structures
 * all types of sqlalchemy columns
 * foreign keys
 * consider replacing uvicorn with gunicorn
 * requirements/test requirements?
-* demo mode
+* change apis to APIs
+* test startup and run scripts

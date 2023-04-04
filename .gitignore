@@ -10,6 +10,8 @@ columbus/framework/__pycache__
 venv
 .DS_Store
 tests/unit/__pycache__
-tests/integration/__pycache__/
+tests/integration/__pycache__/**
 **/__pycache__/
 **/**/__pycache__/
+**/**/__pycache__/**
+.vscode/

@@ -11,9 +11,9 @@ def read_config(config_name):
             "No config file in the root directory. Please add a main.yml config."
         )
 
-    file = open(config_name, "r")
-    config_dict = yaml.safe_load(file)
-    return config_dict
+    with open(config_name, "r") as file:
+        config_dict = yaml.safe_load(file)
+        return config_dict
 
 
 def import_file(path):
@@ -37,3 +37,10 @@ def create_put_request_query(table: Table) -> str:
         ", ".join(fields_string), table
     )
     return query
+
+
+def is_not_falsy(value):
+    if value == 0 or value == None or value == False:
+        return False
+    else:
+        return True

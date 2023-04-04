@@ -1,32 +1,61 @@
 
-# from columbus.framework.main import create_routes_list, create_app, create_route
-# import columbus
-# columbus.framework.main.MAIN_CONFIG_NAME = 'columbus/tests/integration/main.yml
 from unittest.mock import patch
-import columbus
-
-class MockRoute:
-    def __init__(self, route_url, endpoint, methods):
-        self.route_url = route_url
-        self.endpoint = endpoint
-        self.methodd = methods
+from columbus.framework.application import create_route, create_view_dict, create_views_config, create_routes_list
+import databases
+from starlette.routing import Route
+import pytest
 
 
 
-# def test_create_app(mocker):
-#     pass
-#     # mocker.patch('columbus.framework.application.create_routes_list', return_value = [])
-#     # app = create_app(0)
+class MockRoute():
+    pass
+
+def MockDatabase():
+    pass
+
+def MockTable():
+    pass
+
+@pytest.fixture()
+def views_config():
+    views_config = {'method': 'POST', 'url': '/dogs', 'database': MockDatabase(), 'table': MockTable()}
+    yield views_config
+
+@pytest.fixture()
+def config():
+    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    yield config    
+              
 
 
-# def test_create_routes_list(mocker):
-#     mocker.patch("columbus.framework.utils.MAIN_CONFIG_NAME", 'tests/integration/main.yml')
-#     from columbus.framework.main import create_routes_list
-#     routes = create_routes_list(specs={'table':'test_table', 'methods': []})
+
+def test_create_route(views_config):
+
+    route = create_route(views_config)
+    print(route)
+    assert isinstance(route, Route)
+    assert route.path == '/dogs'
+    assert route.methods == {'POST'}
 
 
-# def test_create_route(mocker):
-#     mocker.patch('columbus.framework.application.create_view_function', return_value = None )
-#     route = create_route(method='GET', url='/test', table_name='test')
-    
+def test_create_view_dict(mocker):
+    mocker.patch('columbus.framework.application.import_file', return_value= 'mock_file.py')
+    mocker.patch('columbus.framework.application.getattr', return_value= MockTable())
+    view_dict = create_view_dict(method='POST', url='/dogs', database=MockDatabase(), table=MockTable(), models='models.py')
+    assert view_dict['method'] == 'POST'
+    assert view_dict['url'] == '/dogs'
+    assert view_dict['database'] == MockDatabase()
+    assert view_dict['table'] == MockTable()
 
+def test_create_views_config(mocker, config):
+    mocker.patch('columbus.framework.application.create_view_dict', return_value={})
+    views_config = create_views_config('dogs', config)
+    assert isinstance(views_config, list)
+    assert len(views_config) == 3
+
+def test_create_routes_list(mocker, config):
+    mocker.patch('columbus.framework.application.create_views_config', return_value=[])
+    mocker.patch('columbus.framework.application.map', return_value=[MockRoute()])
+    routes_list = create_routes_list(config)
+    assert isinstance(routes_list, list)
+    assert isinstance(routes_list[0], MockRoute)
