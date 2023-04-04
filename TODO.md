@@ -1,5 +1,4 @@
 * types
-* tests
 * comments
 * double check variable names
 * all types of sqlalchemy columns
@@ -8,3 +7,4 @@
 * requirements/test requirements?
 * change apis to APIs
 * test startup and run scripts
+* configure database in CI
