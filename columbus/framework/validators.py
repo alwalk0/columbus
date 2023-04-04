@@ -9,7 +9,7 @@ from columbus.framework.constants import (
 )
 
 
-def validate_config(config):
+def validate_config(config:dict)->dict | Exception:
     keys = list(config.keys())
     if "demo" in keys and is_not_falsy(config.get("demo")):
         return "demo"
@@ -29,7 +29,7 @@ def validate_config(config):
     return config
 
 
-def validate_config_key(config, key):
+def validate_config_key(config:dict, key:str)->str | Exception:
     match key:
         case "models":
             models_validator = validate_models(config)
@@ -44,7 +44,7 @@ def validate_config_key(config, key):
     return key
 
 
-def validate_models(config):
+def validate_models(config:dict)-> str | Exception:
     models_file_name = config.get("models")
     if models_file_name is None:
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("models"))
@@ -55,7 +55,7 @@ def validate_models(config):
     return models_file_name
 
 
-def validate_database(config: dict) -> str:
+def validate_database(config: dict) -> str | Exception:
     database_url = config.get("database")
     if database_url is None:
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("database"))
@@ -67,7 +67,7 @@ def validate_database(config: dict) -> str:
     return database_url
 
 
-def validate_api_config(config):
+def validate_api_config(config:dict) -> dict | Exception:
     apis = config.get("apis")
     models_file = config.get("models")
     if apis is None:
@@ -87,7 +87,7 @@ def validate_api_config(config):
     return apis
 
 
-def validate_api(models_file, api):
+def validate_api(models_file:str, api:dict) -> dict | Exception:
     keys = list(api.keys())
     missing_keys = [key for key in ALLOWED_KEYS_API if key not in keys]
     if missing_keys:

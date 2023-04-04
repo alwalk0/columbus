@@ -14,7 +14,7 @@ from columbus.framework.requests import (
 )
 
 
-def create_routes_list(config):
+def create_routes_list(config)->list[Route]:
     """Creates a list of all routes for the app using the data from the views config"""
     apis = config.get("apis")
     apis_list = list(apis.keys())
@@ -26,7 +26,7 @@ def create_routes_list(config):
     return routes
 
 
-def create_views_config(api, config):
+def create_views_config(api:str, config:dict)->list[dict]:
     """Transforms initial config into a new data structure with all the necessary info to create routes and view functions"""
 
     table = config["apis"][api]["table"]
@@ -54,7 +54,7 @@ def create_views_config(api, config):
     return views
 
 
-def create_view_dict(method, url, database, table, models):
+def create_view_dict(method:str, url:str, database:databases.Database, table:str, models:str)->dict:
     """Creates the dict and populates it with the necessary objects (database, table)"""
     models_file = import_file(models)
     table = getattr(models_file, table)
@@ -68,7 +68,7 @@ def create_view_dict(method, url, database, table, models):
     return view_dict
 
 
-def create_route(specs):
+def create_route(specs:dict)->Route:
     """Creates a Route and maps it to the appropriate view function"""
 
     method = specs["method"]

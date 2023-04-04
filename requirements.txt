@@ -8,6 +8,3 @@ typer
 sqlalchemy
 pyaml
 asyncpg
-testcontainers
-psutil
-sqlalchemy-utils
