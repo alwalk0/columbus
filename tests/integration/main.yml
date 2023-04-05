@@ -1,6 +1,6 @@
 models: tests/integration/models.py
 database: postgresql://newuser:postgres@localhost/test4
-apis:
+APIs:
   hello_world:
     table: dogs
     methods: [GET, POST]

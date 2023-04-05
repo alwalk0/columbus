@@ -16,7 +16,7 @@ from columbus.framework.requests import (
 
 def create_routes_list(config)->list[Route]:
     """Creates a list of all routes for the app using the data from the views config"""
-    apis = config.get("apis")
+    apis = config.get("APIs")
     apis_list = list(apis.keys())
     views_config = [create_views_config(api, config) for api in apis_list]
     views = sum(  # views_config is a list of lists, so we must flatten it
@@ -29,8 +29,8 @@ def create_routes_list(config)->list[Route]:
 def create_views_config(api:str, config:dict)->list[dict]:
     """Transforms initial config into a new data structure with all the necessary info to create routes and view functions"""
 
-    table = config["apis"][api]["table"]
-    methods = config["apis"][api]["methods"]
+    table = config["APIs"][api]["table"]
+    methods = config["APIs"][api]["methods"]
     models = config["models"]
     url = "/" + str(table)
     views = []

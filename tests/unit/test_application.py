@@ -23,7 +23,7 @@ def views_config():
 
 @pytest.fixture()
 def config():
-    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config    
               
 

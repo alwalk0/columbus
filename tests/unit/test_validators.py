@@ -5,36 +5,36 @@ import pytest
 
 @pytest.fixture()
 def config_extra_keys():
-    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'hello':'world', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'hello':'world', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config    
 
 
 @pytest.fixture()
 def config_missing_keys():
-    config = {'database': 'mock_url', 'hello':'world', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'database': 'mock_url', 'hello':'world', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config    
 
 @pytest.fixture()
 def valid_config():
-    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'models': 'tests/integration/models.py', 'database': 'mock_url', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config  
 
 
 @pytest.fixture()
 def missing_models_value_config():
-    config = {'models': None, 'database': 'mock_url', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'models': '', 'database': 'mock_url', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config       
 
 
 @pytest.fixture()
 def missing_models_file_config():
-    config = {'models': 'foo.py', 'database': 'mock_url', 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'models': 'foo.py', 'database': 'mock_url', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config       
                             
                      
 @pytest.fixture()
 def missing_database_value_config():
-    config = {'models': 'foo.py', 'database': None, 'apis': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
+    config = {'models': 'foo.py', 'database': '', 'APIs': {'dogs': {'table': 'dogs', 'methods':['GET', 'POST'] }}}
     yield config       
 
 
@@ -48,7 +48,7 @@ def invalid_database_url_config():
 
 @pytest.fixture()
 def missing_api_value_config():
-    config = {'models': 'foo.py', 'database': 'foo', 'apis': None}
+    config = {'models': 'foo.py', 'database': 'foo', 'APIs': ''}
     yield config    
 
               
@@ -135,7 +135,7 @@ def test_validate_api_extra_keys():
 
 def test_validate_api_missing_value_table():
     models_file = 'tests/integration/models.py'
-    api = {'table': None, 'methods':['GET', 'POST', 'DELETE'] }
+    api = {'table': '', 'methods':['GET', 'POST', 'DELETE'] }
     validated_api = validate_api(models_file, api)
     assert isinstance(validated_api, Exception)
     assert 'No value for key table in config' in str(validated_api)
@@ -149,7 +149,7 @@ def test_validate_api_no_db_table():
 
 def test_validate_api_missing_value_methods():
     models_file = 'tests/integration/models.py'
-    api = {'table': 'dogs', 'methods':None}
+    api = {'table': 'dogs', 'methods':''}
     validated_api = validate_api(models_file, api)
     assert isinstance(validated_api, Exception)
     assert 'No value for key methods in config' in str(validated_api)

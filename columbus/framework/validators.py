@@ -46,7 +46,7 @@ def validate_config_key(config:dict, key:str)->str | Exception:
 
 def validate_models(config:dict)-> str | Exception:
     models_file_name = config.get("models")
-    if models_file_name is None:
+    if models_file_name == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("models"))
     if not os.path.exists(str(models_file_name)) or not os.path.isfile(
         str(models_file_name)
@@ -57,7 +57,7 @@ def validate_models(config:dict)-> str | Exception:
 
 def validate_database(config: dict) -> str | Exception:
     database_url = config.get("database")
-    if database_url is None:
+    if database_url == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("database"))
     try:
         database = databases.Database(str(database_url))
@@ -68,14 +68,14 @@ def validate_database(config: dict) -> str | Exception:
 
 
 def validate_api_config(config:dict) -> dict | Exception:
-    apis = config.get("apis")
+    apis = config.get("APIs")
     models_file = config.get("models")
-    if apis is None:
+    if apis == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("apis"))
 
     for api in apis:
         api_dict = apis.get(api)
-        if api_dict is None:
+        if api_dict == '':
             return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"](api))
         validated_models_file = validate_models(config)
         if isinstance(validated_models_file, Exception):
@@ -100,7 +100,7 @@ def validate_api(models_file:str, api:dict) -> dict | Exception:
     table_name = api.get("table")
     methods = api.get("methods")
 
-    if table_name is None:
+    if table_name == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("table"))
 
     models_module = import_file(models_file)
@@ -108,7 +108,7 @@ def validate_api(models_file:str, api:dict) -> dict | Exception:
     if not hasattr(models_module, str(table_name)):
         return Exception(EXCEPTIONS["NO_DB_TABLE"](models_file, table_name))
 
-    if methods is None:
+    if methods == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("methods"))
 
     if not isinstance(methods, list):
