@@ -46,4 +46,4 @@ def test_make_json_object():
 
 def test_put_request_query():
     query = create_put_request_query(table=MockTable())
-    assert query == 'UPDATE articles SET foo = :foo, bar = :bar, test = :test WHERE id = :id'
+    assert query == 'UPDATE table SET foo = :foo, bar = :bar, test = :test WHERE id = :id'
