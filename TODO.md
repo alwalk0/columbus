@@ -9,3 +9,4 @@
 * filtering, query strings
 * authentication
 * extensibility
+* demo mode

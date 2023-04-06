@@ -3,20 +3,22 @@ import importlib.machinery
 import os
 import yaml
 from sqlalchemy import Table
+from types import ModuleType
+from databases.backends.postgres import Record
 
 
-def read_config(config_name:str)->dict:
-    if not os.path.exists(config_name):
+def read_config(config_path:str)->dict:
+    if not os.path.exists(config_path):
         return Exception(
             "No config file in the root directory. Please add a main.yml config."
         )
 
-    with open(config_name, "r") as file:
+    with open(config_path, "r") as file:
         config_dict = yaml.load(file, Loader=yaml.BaseLoader)
         return config_dict
 
 
-def import_file(path:str):
+def import_file(path:str)-> ModuleType:
     file_path = os.path.abspath(path)
     modulename = importlib.machinery.SourceFileLoader(
         path.removesuffix(".py"), file_path
@@ -24,7 +26,7 @@ def import_file(path:str):
     return modulename
 
 
-def make_json_object(table: Table, result) -> dict:
+def make_json_object(table: Table, result:Record) -> dict:
     fields = [column.key for column in table.columns]
     content = {field: result[field] for field in fields}
     return content
