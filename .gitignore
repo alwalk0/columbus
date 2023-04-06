@@ -4,7 +4,7 @@ ___pycache__
 columbus/__pycache__
 tests/__pycache__
 columbus/framework/__pycache__
-columbus/framework/__pycache__
+columbus/framework/__pycache__/**
 tests/__pycache__
 columbus/framework/__pycache__
 venv
@@ -15,3 +15,4 @@ tests/integration/__pycache__/**
 **/**/__pycache__/
 **/**/__pycache__/**
 .vscode/
+tests/unit/__pycache__/**

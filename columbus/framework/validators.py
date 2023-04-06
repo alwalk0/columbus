@@ -1,6 +1,6 @@
 import os
 import databases
-from columbus.framework.utils import import_file, is_not_falsy
+from columbus.framework.utils import import_file
 from columbus.framework.constants import (
     EXCEPTIONS,
     ALLOWED_KEYS,
@@ -11,8 +11,6 @@ from columbus.framework.constants import (
 
 def validate_config(config:dict)->dict | Exception:
     keys = list(config.keys())
-    if "demo" in keys and is_not_falsy(config.get("demo")):
-        return "demo"
     missing_keys = [key for key in ALLOWED_KEYS if key not in keys]
     if missing_keys:
         return Exception(EXCEPTIONS["MISSING_KEYS"](missing_keys))

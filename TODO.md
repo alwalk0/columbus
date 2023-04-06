@@ -1,5 +1,4 @@
-* types
-* comments
+* comments, docstrings
 * double check variable names
 * all types of sqlalchemy columns
 * foreign keys
@@ -10,3 +9,4 @@
 * authentication
 * extensibility
 * demo mode
+* finish tests

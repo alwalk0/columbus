@@ -1,4 +1,8 @@
-from columbus.framework.utils import make_json_object, create_put_request_query
+from columbus.framework.utils import (
+    make_json_object,
+    create_put_request_query,
+    create_error_message,
+)
 
 
 ALLOWED_KEYS = ["database", "models", "APIs"]
@@ -7,11 +11,11 @@ ALLOWED_METHODS_API = ["GET", "PUT", "POST", "DELETE"]
 
 
 EXCEPTIONS = {
-    "MISSING_KEYS": lambda keys: "Missing keys in config: {}".format(*keys),
-    "WRONG_KEYS": lambda keys: "Wrong keys in config: {}".format(*keys),
+    "MISSING_KEYS": lambda keys: create_error_message("Missing keys in config", keys),
+    "WRONG_KEYS": lambda keys: create_error_message("Wrong keys in config", keys),
     "NO_VALUE_FOR_KEY": lambda key: "No value for key {} in config".format(key),
-    "INVALID_METHODS": lambda methods: "Invalid methods in methods key: {}".format(
-        *methods
+    "INVALID_METHODS": lambda methods: create_error_message(
+        "Invalid methods in methods key", methods
     ),
     "NO_DB_TABLE": lambda models_file, table_name: "No database table {} in {}".format(
         table_name, models_file

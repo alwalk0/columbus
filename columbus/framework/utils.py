@@ -7,7 +7,7 @@ from types import ModuleType
 from databases.backends.postgres import Record
 
 
-def read_config(config_path:str)->dict:
+def read_config(config_path: str) -> dict:
     if not os.path.exists(config_path):
         return Exception(
             "No config file in the root directory. Please add a main.yml config."
@@ -18,7 +18,7 @@ def read_config(config_path:str)->dict:
         return config_dict
 
 
-def import_file(path:str)-> ModuleType:
+def import_file(path: str) -> ModuleType:
     file_path = os.path.abspath(path)
     modulename = importlib.machinery.SourceFileLoader(
         path.removesuffix(".py"), file_path
@@ -26,7 +26,7 @@ def import_file(path:str)-> ModuleType:
     return modulename
 
 
-def make_json_object(table: Table, result:Record) -> dict:
+def make_json_object(table: Table, result: Record) -> dict:
     fields = [column.key for column in table.columns]
     content = {field: result[field] for field in fields}
     return content
@@ -35,13 +35,14 @@ def make_json_object(table: Table, result:Record) -> dict:
 def create_put_request_query(table: Table) -> str:
     fields = [column.key for column in table.columns if column.key != "id"]
     fields_string = [f"{field} = :{field}".format(field) for field in fields]
-    query = "UPDATE {} SET {} WHERE id = :id".format(table,", ".join(fields_string)
-    )
+    query = "UPDATE {} SET {} WHERE id = :id".format(table, ", ".join(fields_string))
     return query
 
 
-def is_not_falsy(value:any)->bool:
-    if value == 0 or value == None or value == False:
-        return False
+def create_error_message(message: str, keys: list) -> str:
+    if len(keys) == 1:
+        final_string = (message + ": {}").format(keys[0])
     else:
-        return True
+        keys_strings = [f"{key}".format(key) for key in keys]
+        final_string = (message + ": {}").format(", ".join(keys_strings))
+    return final_string

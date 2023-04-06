@@ -31,21 +31,10 @@ if isinstance(validated_config, Exception):
         )
     )
 
-if validated_config == "demo":
-    app = Starlette(
-        routes=[
-            Route(
-                "/",
-                endpoint=lambda request: PlainTextResponse(
-                    "Welcome to Columbus. This is demo mode. Please set up the database to generate APIs."
-                ),
-            )
-        ]
-    )
-else:
-    database = databases.Database(validated_config["database"])
-    validated_config["database"] = database #replace the database url in config with the actual Database object
 
-    routes = create_routes_list(validated_config)
+database = databases.Database(validated_config["database"])
+validated_config["database"] = database #replace the database url in config with the actual Database object
 
-    app = Starlette(routes=routes, lifespan=lifespan)
+routes = create_routes_list(validated_config)
+
+app = Starlette(routes=routes, lifespan=lifespan)
