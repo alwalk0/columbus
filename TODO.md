@@ -9,4 +9,5 @@
 * authentication
 * extensibility
 * demo mode
-* finish tests
+* release
+* dev repo
