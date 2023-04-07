@@ -19,7 +19,6 @@ async def get_request(request: Request, table: Table, database:Database) -> Resp
         else:
             query = table.select()
             results = await database.fetch_all(query)
-            print(type(results[0]))
             response = RESPONSES["GET_ALL"](table, results)
             json_response = JSONResponse(response)
 

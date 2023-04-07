@@ -36,7 +36,7 @@ def validate_config_key(config:dict, key:str)->str | Exception:
         case "database":
             database_validator = validate_database(config)
             return database_validator
-        case "apis":
+        case "APIs":
             api_validator = validate_api_config(config)
             return api_validator
     return key
@@ -69,7 +69,7 @@ def validate_api_config(config:dict) -> dict | Exception:
     apis = config.get("APIs")
     models_file = config.get("models")
     if apis == '':
-        return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("apis"))
+        return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("APIs"))
 
     for api in apis:
         api_dict = apis.get(api)
@@ -96,7 +96,6 @@ def validate_api(models_file:str, api:dict) -> dict | Exception:
         return Exception(EXCEPTIONS["WRONG_KEYS"](extra_keys))
 
     table_name = api.get("table")
-    methods = api.get("methods")
 
     if table_name == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("table"))
@@ -105,6 +104,8 @@ def validate_api(models_file:str, api:dict) -> dict | Exception:
 
     if not hasattr(models_module, str(table_name)):
         return Exception(EXCEPTIONS["NO_DB_TABLE"](models_file, table_name))
+    
+    methods = api.get("methods")
 
     if methods == '':
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("methods"))
