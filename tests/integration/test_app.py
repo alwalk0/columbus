@@ -1,6 +1,5 @@
 from starlette.testclient import TestClient
 from sqlalchemy import create_engine
-import sqlalchemy
 import pytest
 from tests.integration.models import metadata, dogs
 from sqlalchemy_utils import database_exists, create_database, drop_database
@@ -9,15 +8,16 @@ import json
 
 @pytest.fixture(scope="session", autouse=True)
 def create_test_database():
-    url = "postgresql://newuser:postgres@localhost/test4"
+    url = 'postgresql://newuser:postgres@localhost/test4'
     engine = create_engine(url)
-    create_database(url)
+    create_database(url)             
+    metadata.create_all(engine)
     data = [
         {"id": 1, "name": "boo", "breed": "labrador", "age": 3},
         {"id": 2, "name": "moo", "breed": "terrier", "age": 5},
     ]
-    insert_query = dogs.insert(data)
-    engine.execute(insert_query)
+    insert_query = dogs.insert().values(data)  
+    engine.execute(insert_query) 
     yield
     drop_database(url)
 
