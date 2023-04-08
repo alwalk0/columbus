@@ -17,10 +17,9 @@ def start():
         with open(MAIN_CONFIG_NAME, "w") as f:
             f.write(
                 """\
-demo: True
 models: models.py
 database:
-apis:
+APIs:
   hello_world:
     table:
     methods: [GET]
@@ -39,4 +38,4 @@ import sqlalchemy
 
 
 if __name__ == "__main__":
-    typer.run(startup_script)
+    typer.run(start)

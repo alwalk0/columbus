@@ -1,5 +1,3 @@
-from sqlalchemy import Table
-
 from starlette.requests import Request
 from starlette.routing import Route
 
@@ -14,8 +12,9 @@ from columbus.framework.requests import (
 )
 
 
-def create_routes_list(config)->list[Route]:
+def create_routes_list(config) -> list[Route]:
     """Creates a list of all routes for the app using the data from the views config"""
+
     apis = config.get("APIs")
     apis_list = list(apis.keys())
     views_config = [create_views_config(api, config) for api in apis_list]
@@ -26,7 +25,7 @@ def create_routes_list(config)->list[Route]:
     return routes
 
 
-def create_views_config(api:str, config:dict)->list[dict]:
+def create_views_config(api: str, config: dict) -> list[dict]:
     """Transforms initial config into a new data structure with all the necessary info to create routes and view functions"""
 
     table = config["APIs"][api]["table"]
@@ -36,9 +35,7 @@ def create_views_config(api:str, config:dict)->list[dict]:
     views = []
     for method in methods:
         if method == "POST":
-            view = create_view_dict(
-                method, url, config["database"], table, models
-            )
+            view = create_view_dict(method, url, config["database"], table, models)
 
         else:
             view = create_view_dict(
@@ -54,8 +51,11 @@ def create_views_config(api:str, config:dict)->list[dict]:
     return views
 
 
-def create_view_dict(method:str, url:str, database:databases.Database, table:str, models:str)->dict:
+def create_view_dict(
+    method: str, url: str, database: databases.Database, table: str, models: str
+) -> dict:
     """Creates the dict and populates it with the necessary objects (database, table)"""
+    
     models_file = import_file(models)
     table = getattr(models_file, table)
     view_dict = {
@@ -68,8 +68,8 @@ def create_view_dict(method:str, url:str, database:databases.Database, table:str
     return view_dict
 
 
-def create_route(specs:dict)->Route:
-    """Creates a Route and maps it to the appropriate view function"""
+def create_route(specs: dict) -> Route:
+    """Creates a Route object and maps it to the appropriate view function"""
 
     method = specs["method"]
     url = specs["url"]

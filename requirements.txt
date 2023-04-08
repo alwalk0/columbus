@@ -6,5 +6,4 @@ psycopg2
 watchfiles
 typer
 sqlalchemy
-pyaml
 asyncpg

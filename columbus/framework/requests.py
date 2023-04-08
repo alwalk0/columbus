@@ -8,7 +8,7 @@ from databases import Database
 from columbus.framework.constants import RESPONSES, ERROR_RESPONSES, RAW_QUERIES
 
 
-async def get_request(request: Request, table: Table, database:Database) -> Response:
+async def get_request(request: Request, table: Table, database: Database) -> Response:
     try:
         if request.path_params:
             query = RAW_QUERIES["GET_ONE"](table)
@@ -27,7 +27,7 @@ async def get_request(request: Request, table: Table, database:Database) -> Resp
         return Response(content=ERROR_RESPONSES["GET"], status_code=500)
 
 
-async def post_request(request: Request, table: Table, database:Database) -> Response:
+async def post_request(request: Request, table: Table, database: Database) -> Response:
     try:
         data = await request.json()
         query = table.insert().values(data)
@@ -38,7 +38,7 @@ async def post_request(request: Request, table: Table, database:Database) -> Res
         return Response(content=ERROR_RESPONSES["POST"], status_code=500)
 
 
-async def put_request(request: Request, table: Table, database:Database) -> Response:
+async def put_request(request: Request, table: Table, database: Database) -> Response:
     try:
         data = await request.json()
         query = RAW_QUERIES["PUT"](table)
@@ -51,7 +51,9 @@ async def put_request(request: Request, table: Table, database:Database) -> Resp
         return Response(content=ERROR_RESPONSES["PUT"], status_code=500)
 
 
-async def delete_request(request: Request, table: Table, database:Database) -> Response:
+async def delete_request(
+    request: Request, table: Table, database: Database
+) -> Response:
     try:
         query = RAW_QUERIES["DELETE"](table)
         pk = request.path_params["id"]

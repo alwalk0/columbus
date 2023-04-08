@@ -9,7 +9,7 @@ from columbus.framework.constants import (
 )
 
 
-def validate_config(config:dict)->dict | Exception:
+def validate_config(config: dict) -> dict | Exception:
     keys = list(config.keys())
     missing_keys = [key for key in ALLOWED_KEYS if key not in keys]
     if missing_keys:
@@ -27,7 +27,7 @@ def validate_config(config:dict)->dict | Exception:
     return config
 
 
-def validate_config_key(config:dict, key:str)->str | Exception:
+def validate_config_key(config: dict, key: str) -> str | Exception:
     match key:
         case "models":
             models_validator = validate_models(config)
@@ -42,9 +42,9 @@ def validate_config_key(config:dict, key:str)->str | Exception:
     return key
 
 
-def validate_models(config:dict)-> str | Exception:
+def validate_models(config: dict) -> str | Exception:
     models_file_name = config.get("models")
-    if models_file_name == '':
+    if models_file_name == "":
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("models"))
     if not os.path.exists(str(models_file_name)) or not os.path.isfile(
         str(models_file_name)
@@ -55,7 +55,7 @@ def validate_models(config:dict)-> str | Exception:
 
 def validate_database(config: dict) -> str | Exception:
     database_url = config.get("database")
-    if database_url == '':
+    if database_url == "":
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("database"))
     try:
         database = databases.Database(str(database_url))
@@ -65,15 +65,15 @@ def validate_database(config: dict) -> str | Exception:
     return database_url
 
 
-def validate_api_config(config:dict) -> dict | Exception:
+def validate_api_config(config: dict) -> dict | Exception:
     apis = config.get("APIs")
     models_file = config.get("models")
-    if apis == '':
+    if apis == "":
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("APIs"))
 
     for api in apis:
         api_dict = apis.get(api)
-        if api_dict == '':
+        if api_dict == "":
             return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"](api))
         validated_models_file = validate_models(config)
         if isinstance(validated_models_file, Exception):
@@ -85,7 +85,7 @@ def validate_api_config(config:dict) -> dict | Exception:
     return apis
 
 
-def validate_api(models_file:str, api:dict) -> dict | Exception:
+def validate_api(models_file: str, api: dict) -> dict | Exception:
     keys = list(api.keys())
     missing_keys = [key for key in ALLOWED_KEYS_API if key not in keys]
     if missing_keys:
@@ -97,17 +97,17 @@ def validate_api(models_file:str, api:dict) -> dict | Exception:
 
     table_name = api.get("table")
 
-    if table_name == '':
+    if table_name == "":
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("table"))
 
     models_module = import_file(models_file)
 
     if not hasattr(models_module, str(table_name)):
         return Exception(EXCEPTIONS["NO_DB_TABLE"](models_file, table_name))
-    
+
     methods = api.get("methods")
 
-    if methods == '':
+    if methods == "":
         return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("methods"))
 
     if not isinstance(methods, list):
