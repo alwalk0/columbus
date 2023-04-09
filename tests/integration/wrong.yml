@@ -1,0 +1,6 @@
+models: models.py
+database: 
+APIs:
+  hello_world:
+    table: hello
+    methods: [GET, POST]

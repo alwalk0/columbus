@@ -32,7 +32,7 @@ async def post_request(request: Request, table: Table, database: Database) -> Re
         data = await request.json()
         query = table.insert().values(data)
         result = await database.execute(query)
-        response = RESPONSES["POST"](result)
+        response = RESPONSES["POST"](data["id"])
         return JSONResponse(response)
     except Exception as e:
         return Response(content=ERROR_RESPONSES["POST"], status_code=500)
