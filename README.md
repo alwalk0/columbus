@@ -19,9 +19,10 @@ You can have your API up and running in only a couple of simple steps:
 	This command will generate two files for you:
 	main.yml with a basic config template and an empty models.py.
 
-2. **In models.py define your database table using SQLAlchemy.** Then create the tables ([Alembic](https://alembic.sqlalchemy.org/en/latest/) is generally the recommended way to do this) and add some data whichever way you like. Columbus doesn't need you to connect to the database or write any queries for the app to work, it will do that for you. All you need to do is provide it with the database url.
+2. **In models.py define your database table using SQLAlchemy.** <br><br>
+	Then create the tables ([Alembic](https://alembic.sqlalchemy.org/en/latest/) is generally the recommended way to do this) and add some data whichever way you like. Columbus doesn't need you to connect to the database or write any queries for the app to work, it will do that for you. All you need to do is provide it with the database url.
 
-3. **In main.yml add the database url** as a value for the 'database' key. **Add the name of your table** as the value for the 'table' key. Here is a basic working example (provided you've set up the database with this url and your table is named my_table).
+3. **In main.yml add the database url** as a value for the 'database' key. **Add the name of your table** as the value for the 'table' key. <br><br>Here is a basic working example (provided you've set up the database with this url and your table is named my_table).
 
 	```
 	models: models.py
