@@ -1,9 +1,15 @@
-models: tests/integration/models.py
-database: postgresql://newuser:postgres@localhost/test4
+models: models.py
+database: postgresql://fakeuser:postgres@localhost/mydatabase
 APIs:
   hello_world:
     table: dogs
-    methods: [GET, POST, PUT, DELETE]
-    
-            
-    
+    methods: [GET]
+  cats:
+    table: cats   
+    methods: [GET, POST, PUT, DELETE] 
+  snakes:
+    table: snakes
+    methods: [GET, POST, PUT]   
+  bears:
+    table: bears
+    methods: [GET]

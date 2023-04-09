@@ -1,21 +1,95 @@
-<h3> What is Columbus? </h3>
+### What is Columbus?
 
-Columbus is a tool that generates a working async REST API web application from only two pieces of user input: a simple yaml config and an SQLAlchemy database table. 
+Columbus is a Python web framework that automatically generates an async CRUD REST API web application from an SQLAlchemy table.
 
-<h3> Installation and quickstart </h3>
+### How does it work?
 
-``pip install columbus``
+Under the hood Columbus uses [Starlette](https://www.starlette.io), [Databases](https://pypi.org/project/databases/) and [SQLAlchemy](https://www.sqlalchemy.org) along with some interesting metaprogramming techniques to generate a web app based solely on your YAML specification and SQLalchemy table definition. 
 
-``start`` This command will generate two files: 'main.yml' and 'models.py'
+### Installation
 
-``run`` This will run the very basic web application.
+ ```pip install columbus```
 
-These three commands are enough to run a basic hello world application. However, for Columbus to actually do its magic you will first need to write the database table definition in models.py, set up the database and make migrations. After that, Columbus will do all the work for you, no coding necessary. Based on the methods (GET, POST, PUT, DELETE) specified in the yaml config, Columbus will generate the corresponding API endpoints and their urls (those will be generated from the name of your database table).
+### Quickstart
 
-<h3> How does it work? Does it fit my use case? </h3>
+You can have your API up and running in only a couple of simple steps:
 
-Columbus is built on top of Starlette, just like <a href="https://fastapi.tiangolo.com">FastAPI</a>, so it is async and just as fast. However, it serves a slightly different purpose. It is less of a framework and more of a code generator. It's built for the most general use case: you are building a simple CRUD REST API and you are finding yourself having to write a lot of boilerplate. If you need the flexibility of having to do operations on your data before returning it to the user as JSON, Columbus is not for you (at least not in its current form). But if all your code does is perform database queries and returns JSON objects, then congratulations: Columbus can do that for you! No coding, no testing. Your API is basically ready to deploy.
+1. ```start```
 
-<h3> Is it actually production ready? </h3>
+	This command will generate two files for you:
+	main.yml with a basic config template and an empty models.py.
 
-Probably not, yet. All the aforementioned features are present and working, but integration tests need to be added to the test suite before we can confidently recommend it for production. Bug reports and contributions are very welcome!
+2. **In models.py define your database table using SQLAlchemy.** Then create the tables ([Alembic](https://alembic.sqlalchemy.org/en/latest/) is generally the recommended way to do this) and add some data whichever way you like. Columbus doesn't need you to connect to the database or write any queries for the app to work, it will do that for you. All you need to do is provide it with the database url.
+
+3. **In main.yml add the database url** as a value for the 'database' key. **Add the name of your table** as the value for the 'table' key. Here is a basic working example (provided you've set up the database with this url and your table is named my_table).
+
+	```
+	models: models.py
+	database: postgresql://someuser:postgres@localhost/mydatabase
+	APIs:
+	  hello_world:
+	    table: my_table
+	    methods: [GET]
+	```    
+	
+
+
+4. ```run```
+
+	This command will run your app. **Navigate to localhost:8000/my_table and see your API in action**.
+	
+	
+### Documentation
+
+Here is a comprehensive list of possible keys and values in the YAML config.
+
+Keys:
+
+- **models**: relative path to the file where your SQLAlchemy table is defined
+
+
+- **database**: valid database url
+
+- **APIs**: the APIs you want Columbus to generate. Each API can be named whatever you want, but it has two mandatory keys:
+	
+	- **table**: name of SQLAlchemy table from which you want to generate the API
+	
+	-  **methods**: list of http methods (GET, PUT, POST, DELETE) you want the API to support. Attention: this is the only key that needs to be a list, so put the methods in square brackets.
+
+Below is an example of a more comprehensive animals API, which should give you a feel for the correct YAML structure Columbus understands. Incorrect structures will throw an error and the app won't run.
+
+
+```
+models: models.py
+database: postgresql://someuser:postgres@localhost/mydatabase
+APIs:
+  dogs:
+    table: dogs
+    methods: [GET, POST]
+  cats:
+    table: cats   
+    methods: [GET, POST, PUT, DELETE] 
+  snakes:
+    table: snakes
+    methods: [GET, POST, PUT]   
+  bears:
+    table: bears
+    methods: [GET]    
+```    
+    
+    
+    
+    
+    
+    
+### What use cases does it support?
+
+Columbus is still in the early days of active development, so it only supports the most basic use case for now. Feel free to open an issue for a missing feature and it will most likely be pushed to the top of the priority list and shipped soon.
+            
+
+
+
+
+	
+	
+	
