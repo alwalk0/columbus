@@ -1,5 +1,8 @@
 # Columbus
 
+![PyPI](https://img.shields.io/pypi/v/columbus)
+
+
 
 ### What is Columbus?
 
