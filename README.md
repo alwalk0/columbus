@@ -1,6 +1,7 @@
 # Columbus
 
 ![PyPI](https://img.shields.io/pypi/v/columbus)
+![GitHub](https://img.shields.io/github/license/leftfile/columbus)
 
 
 
