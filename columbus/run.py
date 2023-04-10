@@ -8,7 +8,7 @@ app = typer.Typer()
 @app.command()
 def run():
     uvicorn.run(
-        "columbus.app:app",
+        "columbus.main:app",
         host="0.0.0.0",
         port=8000,
         reload=True,
