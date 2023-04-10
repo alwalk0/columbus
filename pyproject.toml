@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "columbus"
-version = "0.1.5"
-description = ""
+version = "0.1.7"
+description = "Generate an async web API from an SQLAlchemy table"
 authors = ["alwalk0 <walkernotwalker@gmail.com>"]
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
