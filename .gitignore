@@ -18,3 +18,4 @@ tests/integration/__pycache__/**
 .vscode/
 tests/unit/__pycache__/**
 columbus/framework/__pycache__/**
+dist/
