@@ -3,6 +3,7 @@ name = "columbus"
 version = "0.1.7"
 description = "Generate an async web API from an SQLAlchemy table"
 authors = ["alwalk0 <walkernotwalker@gmail.com>"]
+repository = "https://github.com/leftfile/columbus"
 license = "MIT"
 readme = "README.md"
 
