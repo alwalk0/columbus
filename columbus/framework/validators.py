@@ -49,7 +49,7 @@ def validate_models(config: dict) -> str | Exception:
     if not os.path.exists(str(models_file_name)) or not os.path.isfile(
         str(models_file_name)
     ):
-        return Exception("No such file: {}".format(models_file_name))
+        return Exception(EXCEPTIONS["NO_SUCH_FILE"](models_file_name))
     return models_file_name
 
 
@@ -60,7 +60,7 @@ def validate_database(config: dict) -> str | Exception:
     try:
         database = databases.Database(str(database_url))
     except:
-        return Exception(EXCEPTIONS["INVALID_DB_URL"]())
+        return Exception(EXCEPTIONS["INVALID_DB_URL"])
 
     return database_url
 

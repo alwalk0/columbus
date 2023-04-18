@@ -20,8 +20,9 @@ EXCEPTIONS = {
     "NO_DB_TABLE": lambda models_file, table_name: "No database table {} in {}".format(
         table_name, models_file
     ),
-    "INVALID_DB_URL": lambda: "Invalid database url in config",
+    "INVALID_DB_URL": "Invalid database url in config",
     "MUST_BE_LIST": "Value for methods key must be a list",
+    "NO_SUCH_FILE": lambda file: "No such file: {}".format(file)
 }
 
 
