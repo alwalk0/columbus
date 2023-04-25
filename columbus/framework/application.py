@@ -77,6 +77,16 @@ def create_route(specs: dict) -> Route:
     database = specs["database"]
     table = specs["table"]
 
+
+
+
+
+
+
+
+
+
+
     async def view_function(request: Request):
         match method:
             case "GET":
