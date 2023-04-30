@@ -92,6 +92,10 @@ APIs:
 ### What use cases does it support?
 
 Columbus is still in the early days of active development, so it only supports the most basic use case for now. Feel free to open an issue for a missing feature and it will most likely be pushed to the top of the priority list and shipped soon.
+
+### Where can I read more about it?
+
+An essay on the ideas behind Columbus and the specifics of its implementation is currently available to [read](https://www.leftfile.org/texts/columbus_view/) in the browser or [download](https://www.leftfile.org/texts/columbus_download) as pdf.
             
 
 
