@@ -73,7 +73,6 @@ def create_route(specs: dict) -> Route:
 
     method = specs["method"]
     url = specs["url"]
-    table = specs["table"]
     database = specs["database"]
     table = specs["table"]
 
