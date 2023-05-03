@@ -8,7 +8,7 @@ on:
     branches: [ "master" ]
 
 env:
-  DB_HOST: localhost    
+  POSTGRES_HOST: localhost    
 
 jobs:
   build:
@@ -18,6 +18,23 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ "3.11"]
+
+  services:
+    # Label used to access the service container
+    postgres:
+      # Docker Hub image
+      image: postgres
+      # Provide the password for postgres
+      env:
+        POSTGRES_PASSWORD: postgres
+      # Set health checks to wait until postgres has started
+      ports:
+        - 5432:5432
+      options: >-
+        --health-cmd pg_isready
+        --health-interval 10s
+        --health-timeout 5s
+        --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
@@ -39,4 +56,9 @@ jobs:
         black columbus 
     - name: Run tests
       run: |
-        python -m  pytest -s tests/unit 
+        python -m  pytest -s tests
+      env: 
+        # The hostname used to communicate with the PostgreSQL service container
+        POSTGRES_HOST: postgres
+        # The default PostgreSQL port
+        POSTGRES_PORT: 5432
