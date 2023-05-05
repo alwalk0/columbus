@@ -7,3 +7,4 @@ watchfiles
 typer
 sqlalchemy
 asyncpg
+python-dotenv

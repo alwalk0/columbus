@@ -7,9 +7,10 @@ import json
 
 @pytest.fixture(scope="session", autouse=True)
 def create_test_database():
-    url = 'postgresql://newuser:postgres@localhost/test4'
-    engine = create_engine(url)
-    create_database(url)             
+    db_url = 'postgresql://newuser:postgres@localhost/test4'
+    engine = create_engine(db_url)
+    if not database_exists(db_url):
+        create_database(db_url)             
     metadata.create_all(engine)
     data = [
         {"id": 1, "name": "boo", "breed": "labrador", "age": 3},
@@ -19,7 +20,7 @@ def create_test_database():
     insert_query = dogs.insert().values(data)  
     engine.execute(insert_query) 
     yield
-    drop_database(url)
+    drop_database(db_url)
 
 
 @pytest.fixture()
