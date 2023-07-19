@@ -66,4 +66,4 @@ middleware = [
     Middleware(AuthenticationMiddleware, backend=BasicAuthBackend())
 ]
 
-app = Starlette(routes=routes, lifespan=lifespan)
+app = Starlette(routes=routes, lifespan=lifespan, middleware=middleware)

@@ -8,7 +8,10 @@ from databases import Database
 from columbus.framework.constants import RESPONSES, ERROR_RESPONSES, RAW_QUERIES
 
 
-async def get_request(request: Request, table: Table, database: Database) -> Response:
+async def get_request(request: Request, auth:bool, table: Table, database: Database) -> Response:
+    if auth:
+        if request.user.is_authenticated:
+            print(user)
     try:
         if request.path_params:
             query = RAW_QUERIES["GET_ONE"](table)
@@ -27,7 +30,10 @@ async def get_request(request: Request, table: Table, database: Database) -> Res
         return Response(content=ERROR_RESPONSES["GET"], status_code=500)
 
 
-async def post_request(request: Request, table: Table, database: Database) -> Response:
+async def post_request(request: Request, auth:bool, table: Table, database: Database) -> Response:
+    if auth:
+        if request.user.is_authenticated:
+            print(user)
     try:
         data = await request.json()
         query = table.insert().values(data)
@@ -38,7 +44,10 @@ async def post_request(request: Request, table: Table, database: Database) -> Re
         return Response(content=ERROR_RESPONSES["POST"], status_code=500)
 
 
-async def put_request(request: Request, table: Table, database: Database) -> Response:
+async def put_request(request: Request, auth:bool, table: Table, database: Database) -> Response:
+    if auth:
+        if request.user.is_authenticated:
+            print(user)
     try:
         data = await request.json()
         query = RAW_QUERIES["PUT"](table)
@@ -52,8 +61,11 @@ async def put_request(request: Request, table: Table, database: Database) -> Res
 
 
 async def delete_request(
-    request: Request, table: Table, database: Database
+    request: Request, auth: bool, table: Table, database: Database
 ) -> Response:
+    if auth:
+        if request.user.is_authenticated:
+            print(user)
     try:
         query = RAW_QUERIES["DELETE"](table)
         pk = request.path_params["id"]
@@ -62,3 +74,6 @@ async def delete_request(
         return JSONResponse(response)
     except Exception as e:
         return Response(content=ERROR_RESPONSES["DELETE"], status_code=500)
+
+async def create_auth_token(request):
+    

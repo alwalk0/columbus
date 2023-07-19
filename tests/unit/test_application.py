@@ -17,6 +17,7 @@ def views_config(mock_table, mock_database):
         "url": "/dogs",
         "database": mock_database,
         "table": mock_table,
+        "auth": False
     }
     yield views_config
 
@@ -26,7 +27,7 @@ def config():
     config = {
         "models": "tests/integration/models.py",
         "database": "mock_url",
-        "APIs": {"dogs": {"table": "dogs", "methods": ["GET", "POST"]}},
+        "APIs": {"dogs": {"table": "dogs", "methods": ["GET", "POST"], "auth": ["POST"]}},
     }
     yield config
 
@@ -57,6 +58,7 @@ def test_create_view_dict(mocker, mock_table, mock_database):
         database=mock_database,
         table=mock_table,
         models="models.py",
+        auth_required=False
     )
     assert view_dict["method"] == "POST"
     assert view_dict["url"] == "/dogs"

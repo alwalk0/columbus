@@ -6,6 +6,7 @@ from columbus.framework.constants import (
     ALLOWED_KEYS,
     ALLOWED_METHODS_API,
     ALLOWED_KEYS_API,
+    EXTRA_KEYS_API
 )
 
 
@@ -91,7 +92,7 @@ def validate_api(models_file: str, api: dict) -> dict | Exception:
     if missing_keys:
         return Exception(EXCEPTIONS["MISSING_KEYS"](missing_keys))
 
-    extra_keys = [key for key in keys if key not in ALLOWED_KEYS_API]
+    extra_keys = [key for key in keys if key not in ALLOWED_KEYS_API and key not in EXTRA_KEYS_API]
     if extra_keys:
         return Exception(EXCEPTIONS["WRONG_KEYS"](extra_keys))
 
@@ -118,5 +119,24 @@ def validate_api(models_file: str, api: dict) -> dict | Exception:
     ]
     if invalid_methods:
         return Exception(EXCEPTIONS["INVALID_METHODS"](invalid_methods))
+    
+    if "auth" in api.keys():
+    
+        auth_methods = api.get("auth")
+
+        if auth_methods == "":
+            return Exception(EXCEPTIONS["NO_VALUE_FOR_KEY"]("auth"))
+
+        if not isinstance(auth_methods, list):
+            return Exception(EXCEPTIONS["MUST_BE_LIST"])
+
+        invalid_methods = [
+            method for method in auth_methods if method not in ALLOWED_METHODS_API
+        ]
+        if invalid_methods:
+            return Exception(EXCEPTIONS["INVALID_METHODS"](invalid_methods))
+        
+    else:
+        api["auth"] = None
 
     return api

@@ -12,3 +12,9 @@ dogs = sqlalchemy.Table(
     sqlalchemy.Column("breed", sqlalchemy.String),
     sqlalchemy.Column("age", sqlalchemy.Integer),
 )
+
+# tokens = sqlalchemy.Table(
+#     "tokens",
+#     metadata,
+#     salalchemy.Column("token")
+# )

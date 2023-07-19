@@ -4,3 +4,4 @@ APIs:
   dogs:
     table: dogs
     methods: [GET, POST, PUT, DELETE]
+    auth: [GET, POST, PUT, DELETE]

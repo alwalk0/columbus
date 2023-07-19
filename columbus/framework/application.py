@@ -27,32 +27,34 @@ def create_routes_list(config) -> list[Route]:
 
 def create_views_config(api: str, config: dict) -> list[dict]:
     """Transforms initial config into a new data structure with all the necessary info to create routes and view functions"""
-
+    print(config["APIs"][api])
     table = config["APIs"][api]["table"]
     methods = config["APIs"][api]["methods"]
+    auth = config["APIs"][api]["auth"]
     models = config["models"]
     url = "/" + str(table)
     views = []
     for method in methods:
+        auth_required = True if auth is not None and method in auth else False
         if method == "POST":
-            view = create_view_dict(method, url, config["database"], table, models)
+            view = create_view_dict(method, url, auth_required, config["database"], table, models)
 
         else:
             view = create_view_dict(
-                method, url + "/{id:int}", config["database"], table, models
+                method, url + "/{id:int}", auth_required, config["database"], table, models
             )
 
         views.append(view)
 
     views.append(
-        create_view_dict("GET", url, config["database"], table, models)
+        create_view_dict("GET", url, auth_required, config["database"], table, models)
     )  # add the root url
 
     return views
 
 
 def create_view_dict(
-    method: str, url: str, database: databases.Database, table: str, models: str
+    method: str, url: str, auth_required: bool, database: databases.Database, table: str, models: str
 ) -> dict:
     """Creates the dict and populates it with the necessary objects (database, table)"""
     
@@ -61,6 +63,7 @@ def create_view_dict(
     view_dict = {
         "method": method,
         "url": url,
+        "auth": auth_required,
         "database": database,
         "table": table,
     }
@@ -75,17 +78,20 @@ def create_route(specs: dict) -> Route:
     url = specs["url"]
     database = specs["database"]
     table = specs["table"]
+    auth = specs["auth"]
+
+
 
     async def view_function(request: Request):
         match method:
             case "GET":
-                return await get_request(request, table, database)
+                return await get_request(request, auth, table, database)
             case "POST":
-                return await post_request(request, table, database)
+                return await post_request(request, auth, table, database)
             case "PUT":
-                return await put_request(request, table, database)
+                return await put_request(request, auth, table, database)
             case "DELETE":
-                return await delete_request(request, table, database)
+                return await delete_request(request, auth, table, database)
 
     route = Route(url, endpoint=view_function, methods=[method])
     return route

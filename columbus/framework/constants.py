@@ -7,6 +7,7 @@ from columbus.framework.utils import (
 
 ALLOWED_KEYS = ["database", "models", "APIs"]
 ALLOWED_KEYS_API = ["table", "methods"]
+EXTRA_KEYS_API =  ["auth"]
 ALLOWED_METHODS_API = ["GET", "PUT", "POST", "DELETE"]
 
 
